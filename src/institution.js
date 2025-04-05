@@ -14,20 +14,23 @@ class Institution {
   }
 
   listStudents () {
-    console.log(`\nEnrolled Students (${this.name})\n-------------------------------------------`)
+    let msg = `\nEnrolled Students (${this.name})\n-------------------------------------------`
 
     const studentList = Object.values(this.studentList).map(student => `${student.lastName}, ${student.firstName}`)
     const sortedStudentList = studentList.sort()
 
-    sortedStudentList.forEach(student => console.log(student))
+    sortedStudentList.forEach(student => msg += ("\n" + student))
 
-    console.log('\n')
+    msg += "\n"
+    console.log(msg)
+    return msg;
   }
 
   enroll_student (student) {
     if (student instanceof Student) {
       if (student.username in this.studentList) {
         console.log(`${student.firstName} ${student.lastName} is already enrolled!`)
+        return `${student.firstName} ${student.lastName} is already enrolled!`
       } else {
         this.studentList[student.userName] = student
       }
@@ -41,29 +44,36 @@ class Institution {
       if (dept === offering.course.department && number === offering.course.number && year === offering.year && quarter === offering.quarter && sectionNumber === offering.sectionNumber) {
         if (student in this.studentList) {
           if (offering.registered_students.includes(student)) {
-            console.log(`\n${student.first_name} ${student.last_name} is already enrolled in this course\n`)
+            console.log(`\n${student.firstName} ${student.lastName} is already enrolled in this course\n`)
+            return `\n${student.firstName} ${student.lastName} is already enrolled in this course\n`
           } else {
             offering.register_students([student])
           }
         }
+      } else {
+        return(dept+' '+offering.course.department+' '+number+' '+offering.course.number+' '+year+' '+offering.year+' '+quarter+' '+offering.quarter+' '+sectionNumber+' '+offering.sectionNumber)
       }
     }
   }
 
   list_instructors () {
-    console.log(`\nInstructor List (${this.name})\n-------------------------------------------`)
+    //console.log(`\nInstructor List (${this.name})\n-------------------------------------------`)
     const facultyList = Object.values(this.facultyList).map(instructor => `${instructor.lastName}, ${instructor.firstName}`)
     const sortedFacultyList = facultyList.sort()
-    sortedFacultyList.forEach(instructor => console.log(instructor))
-    console.log('\n')
+    let result = `\nInstructor List (${this.name})\n-------------------------------------------`
+    sortedFacultyList.forEach(instructor => result += ('\n' + instructor))
+    return result;
   }
 
   hire_instructor (instructor) {
     if (instructor instanceof Instructor) {
-      if (instructor.username in this.facultyList) {
-        console.log(`${instructor.firstName} ${instructor.lastName} already works at this institution!`)
+      if (instructor.userName in this.facultyList) {
+        const msg = `${instructor.firstName} ${instructor.lastName} already works at this institution!`;
+        console.log(msg)
+        return msg;
       } else {
         this.facultyList[instructor.userName] = instructor
+        return `Hired ${instructor.firstName} ${instructor.lastName}`
       }
     } else {
       throw new TypeError('Only accepts instructor object')
@@ -74,7 +84,9 @@ class Institution {
     for (const offering of this.courseSchedule[courseName]) {
       if (dept === offering.course.department && number === offering.course.number && year === offering.year && quarter === offering.quarter && sectionNumber === offering.sectionNumber) {
         if (offering.instructor === instructor) {
-          console.log(`${instructor.first_name} ${instructor.last_name} is already teaching this course`)
+          const msg = `${instructor.firstName} ${instructor.lastName} is already teaching this course`;
+          console.log(msg)
+          return msg;
         } else {
           offering.instructor = instructor
           instructor.courseList.push(offering)
@@ -106,6 +118,7 @@ class Institution {
         schedule.forEach(item => console.log(item))
       } else {
         console.log('No offerings during this semester')
+        return 'No offerings scheduled during this semester'
       }
     } else {
       const schedule = []
@@ -119,9 +132,11 @@ class Institution {
           schedule.forEach(item => console.log(item))
         } else {
           console.log('No offerings scheduled during this semester')
+          return 'No offerings scheduled during this semester'
         }
       } else {
         console.log('No offerings currently scheduled')
+        return 'No offerings currently scheduled'
       }
     }
   }
