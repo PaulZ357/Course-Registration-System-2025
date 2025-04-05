@@ -28,7 +28,7 @@ class Institution {
 
   enroll_student (student) {
     if (student instanceof Student) {
-      if (student.username in this.studentList) {
+      if (this.studentList[student.userName]) {
         console.log(`${student.firstName} ${student.lastName} is already enrolled!`)
         return `${student.firstName} ${student.lastName} is already enrolled!`
       } else {
@@ -42,8 +42,8 @@ class Institution {
   register_student_for_course (student, courseName, dept, number, sectionNumber, year, quarter) {
     for (const offering of this.courseSchedule[courseName]) {
       if (dept === offering.course.department && number === offering.course.number && year === offering.year && quarter === offering.quarter && sectionNumber === offering.sectionNumber) {
-        if (student in this.studentList) {
-          if (offering.registered_students.includes(student)) {
+        if (this.studentList[student.userName]) {
+          if (offering.get_students().includes(student)) {
             console.log(`\n${student.firstName} ${student.lastName} is already enrolled in this course\n`)
             return `\n${student.firstName} ${student.lastName} is already enrolled in this course\n`
           } else {
@@ -154,7 +154,7 @@ class Institution {
 
   add_course (course) {
     if (course instanceof Course) {
-      if (course.name in this.courseCatalog) {
+      if (this.courseCatalog[course.name] == course) {
         return 'Course has already been added'
       } else {
         this.courseCatalog[course.name] = course

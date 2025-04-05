@@ -58,7 +58,7 @@ describe('Student', () => {
         institution.add_course_offering(courseOffering2)
 
         institution.register_student_for_course(student, "Data Structures and Abstraction", "CSC", 111, 3, 2024, "Spring")
-        institution.register_student_for_course(student, "Data Structures and Abstraction", "CSC", 109, 1, 2024, "Spring")
+        institution.register_student_for_course(student, "Introduction to Version Control and Collaboration", "CSC", 109, 1, 2024, "Spring")
         institution.register_student_for_course(student, "Software Development", "SER", 225, 3, 2024, "Fall")
         institution.register_student_for_course(student, "Software Quality Assurance", "SER", 330, 3, 2025, "Spring")
 
@@ -67,6 +67,6 @@ describe('Student', () => {
         courseOffering3.submit_grade(student,'A')
         courseOffering4.submit_grade(student,'A')
 
-        expect(student.list_courses().toString()).toBe("")
+        expect(student.list_courses().toString()).toBe([courseOffering,courseOffering2,courseOffering3,courseOffering4].toString())
     })
 })

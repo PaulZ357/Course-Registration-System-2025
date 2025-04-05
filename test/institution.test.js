@@ -74,6 +74,19 @@ describe('Institution-Tests', () => {
         expect(() => testInstitution.hire_instructor(testPerson)).toThrowError(TypeError)
     })
     
+    test('courseIsValid', () => {
+        
+        const course = new Course("CSC",111,"Data Structures and Abstraction",3)
+        expect(testInstitution.add_course(course)).toBe()
+    })
+
+    test('courseAddedMoreThanOnce', () => {
+        
+        const course = new Course("CSC",111,"Data Structures and Abstraction",3)
+        expect(testInstitution.add_course(course)).toBe()
+        expect(testInstitution.add_course(course)).toBe("Course has already been added")
+    })
+
     test('courseIsInvalid', () => {
 
         // Arrange
@@ -95,7 +108,21 @@ describe('Institution-Tests', () => {
         expect(testInstitution.enroll_student(student)).toBe();
     })
 
-    // i tried to get a test case with enroll student being called twice but jest treats it as if one was added.
+    test('GivenNewStudentEnrolled_AlreadyExists_WontAdd', () => {
+
+        // Arrange
+        const student = new Student("Doe", "John", testInstitution, "12/30/1999", "jdoe")
+        const student2 = new Student("Doe", "John", testInstitution, "12/30/1999", "jdoe")
+
+
+        // Act
+        const method1 = testInstitution.enroll_student(student);
+        const method2 = testInstitution.enroll_student(student2);
+
+        // Assert
+        expect(method1).toBe();
+        expect(method2).toBe('John Doe is already enrolled!');
+    })
 
     test('GivenNewStudentEnrolled_NoArgument_ThrowsError', () => {
 
@@ -195,7 +222,7 @@ describe('Institution-Tests', () => {
         expect(testInstitution.register_student_for_course(student,"Data Structures and Abstraction","CSC",111,3,2024,"Spring")).toBe()
     })
 
-    /*test('GivenRegisterStudentForCourse_StudentEnrolled_PrintsMessage',() => {
+    test('GivenRegisterStudentForCourse_StudentEnrolled_PrintsMessage',() => {
         const student = new Student("Simpson", "Homer", testInstitution, "04/19/1987", "hsimpson")
         testInstitution.enroll_student(student);
         const course = new Course("CSC",111,"Data Structures and Abstraction",3)
@@ -209,10 +236,17 @@ describe('Institution-Tests', () => {
         expect(m1).toBe()
         const m2 = testInstitution.register_student_for_course(student,course.name,course.department,course.number,courseOffering.sectionNumber,courseOffering.year,courseOffering.quarter);
 
-        expect(m2).toBe('Homer Simpson is already enrolled in this course')
-    })*/
+        expect(m2).toBe('\nHomer Simpson is already enrolled in this course\n')
+    })
 
     test('GivenRegisterStudentForCourse_NoArgs_Error',() => {
         expect(testInstitution.register_student_for_course).toThrowError(TypeError)
     })
+    
+    test('GivenInstructorList_AllCases_ListInstructors', () => {
+        const sqaInstructor = new Instructor('Nicolini', 'Dylan', testInstitution, '1/1/2024', 'dnicolini')
+        testInstitution.hire_instructor(sqaInstructor)
+        expect(testInstitution.list_instructors()).toBe('\nInstructor List (Quinnipiac University)\n-------------------------------------------\nNicolini, Dylan')
+    })
+
 })
